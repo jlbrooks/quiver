@@ -41,6 +41,7 @@ gem 'spring',        group: :development
 #testing stuff
 
 group :development, :test do
+  gem 'spring-commands-rspec'
   gem 'rspec-rails'
 end
 
