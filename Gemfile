@@ -52,3 +52,6 @@ group :test do
   gem 'guard-rspec'
   gem 'launchy'
 end
+
+#weird windows timezone stuff
+gem 'tzinfo-data', platforms: [:mingw, :mswin]
