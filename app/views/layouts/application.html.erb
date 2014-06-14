@@ -9,7 +9,12 @@
 <body>
 <ul id="topNav">
   <li class="navOther"><%= link_to "Posts", posts_path %></li>
-  <li id="login"><%= link_to "Login", new_user_session_path %></li>
+  <% if !user_signed_in? %>
+    <li class="account"><%= link_to "Login", new_user_session_path %></li>
+  <% else %>
+    <li class="account"><%= link_to "Edit Profile", edit_user_registration_path %></li>
+    <li class="account"><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+  <% end %>
 </ul>
 
 <p class="notice"><%= notice %></p>
