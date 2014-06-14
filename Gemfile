@@ -55,3 +55,5 @@ end
 
 #weird windows timezone stuff
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
+
+gem 'devise'
