@@ -16,4 +16,8 @@ RSpec.describe Post, :type => :model do
     @post.body = nil
     @post.should_not be_valid
   end
+
+  it "should be valid to make another one with the same title" do
+    FactoryGirl.create(:post).should be_valid
+  end
 end
