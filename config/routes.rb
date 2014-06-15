@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :groups
 
   resources :posts
-  root 'posts#index'
+  root :controller => 'static', :action => :home
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

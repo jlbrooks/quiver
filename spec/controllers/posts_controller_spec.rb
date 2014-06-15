@@ -30,22 +30,25 @@ RSpec.describe PostsController, :type => :controller do
 
   describe "GET #index" do
     it "populates an array of posts" do
-      sign_in nil
+      sign_in @user
       get :index
       expect(assigns(:posts)).to_not eq(nil)
     end
+
+    it "assigns the current user to @user" do
+      sign_in @user
+      get :index
+      expect(assigns(:user)).to eq(@user)
+    end
+
     it "displays only a user's posts if logged in" do
       sign_in @user
       get :index
       expect(assigns(:posts)).to eq([@userPost])
     end
-    it "displays all posts if no user logged in" do
-      sign_in nil
-      get :index
-      expect(assigns(:posts)).to eq([@post, @userPost])
-    end
+
     it "renders the :index view" do
-      sign_in nil
+      sign_in @user
       get :index
       expect(response).to render_template :index
     end
@@ -53,13 +56,13 @@ RSpec.describe PostsController, :type => :controller do
 
   describe "GET #show" do
     it "assigns the requested post to @post" do
-      sign_in nil
+      sign_in @user
       get :show, id: @post
       expect(assigns(:post)).to eq(@post)
     end
 
     it "renders the :show view" do
-      sign_in nil
+      sign_in @user
       get :show, id: @post
       expect(response).to render_template :show
     end
