@@ -19,6 +19,168 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PostsController, :type => :controller do
+  before do
+    @post = FactoryGirl.create(:post)
+    @user = FactoryGirl.create(:user)
+    @userPost = FactoryGirl.create(:post, user: @user)
 
+    #set up devise mapping for authentication
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+  end
 
+  describe "GET #index" do
+    it "populates an array of posts" do
+      sign_in nil
+      get :index
+      expect(assigns(:posts)).to_not eq(nil)
+    end
+    it "displays only a user's posts if logged in" do
+      sign_in @user
+      get :index
+      expect(assigns(:posts)).to eq([@userPost])
+    end
+    it "displays all posts if no user logged in" do
+      sign_in nil
+      get :index
+      expect(assigns(:posts)).to eq([@post, @userPost])
+    end
+    it "renders the :index view" do
+      sign_in nil
+      get :index
+      expect(response).to render_template :index
+    end
+  end
+
+  describe "GET #show" do
+    it "assigns the requested post to @post" do
+      sign_in nil
+      get :show, id: @post
+      expect(assigns(:post)).to eq(@post)
+    end
+
+    it "renders the :show view" do
+      sign_in nil
+      get :show, id: @post
+      expect(response).to render_template :show
+    end
+  end
+
+  describe "GET #edit" do
+    it "assigns the requested post to @post" do
+      sign_in @user
+      get :edit, id: @post
+      expect(assigns(:post)).to eq(@post)
+    end
+
+    it "renders the :edit view" do
+      sign_in @user
+      get :show, id: @post
+      expect(response).to render_template :show
+    end
+  end
+
+  describe "GET #new" do
+    it "sets the post to a new post" do
+      sign_in @user
+      get :new
+      expect(assigns(:post)).to_not eq(nil)
+    end
+
+    it "renders the :new view" do
+      sign_in @user
+      get :new
+      expect(response).to render_template :new
+    end
+  end
+
+  describe "POST create" do
+    before do
+      sign_in @user
+    end
+
+    context "with valid attributes" do
+      it "creates a new post" do
+        expect {
+          post :create, post: FactoryGirl.attributes_for(:post)
+        }.to change(Post,:count).by(1)
+      end
+
+      it "redirects to the new post" do
+        post :create, post: FactoryGirl.attributes_for(:post)
+        expect(response).to redirect_to Post.last
+      end
+    end
+
+    context "with invalid attributes" do
+      it "does not save the new contact" do
+        expect {
+          post :create, post: FactoryGirl.attributes_for(:invalid_post)
+        }.to_not change(Post,:count)
+      end
+
+      it "redirects back to the new method" do
+        post :create, post: FactoryGirl.attributes_for(:invalid_post)
+        expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe "PUT update" do
+    before do
+      sign_in @user
+    end
+
+    context "with valid attributes" do
+      it "assigns the requested post to @post" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:post)
+        expect(assigns(:post)).to eq(@post)
+      end
+
+      it "changes @post's attributes" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:post, title: "new")
+        @post.reload
+        expect(@post.title).to eq("new")
+      end
+
+      it "redirects to the edit post method" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:post)
+        expect(response).to redirect_to @post
+      end
+    end
+
+    context "with invalid attributes" do
+      it "assigns the requested post to @post" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:post)
+        expect(assigns(:post)).to eq(@post)
+      end
+
+      it "should not change @post's attributes" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:post, title: nil, body: "new")
+        @post.reload
+        expect(@post.body).to_not eq("new")
+      end
+
+      it "redirects to the edit post method" do
+        put :update, id: @post, post: FactoryGirl.attributes_for(:invalid_post)
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  describe "DELETE destroy" do
+    before do
+      sign_in @user
+    end
+
+    it "deletes the contact" do
+      expect{
+        delete :destroy, id: @post
+      }.to change(Post, :count).by(-1)
+    end
+
+    it "redirects to posts#index" do
+      delete :destroy, id: @post
+      response.should redirect_to posts_url
+    end
+  end
 end

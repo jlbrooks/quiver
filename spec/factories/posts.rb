@@ -6,4 +6,8 @@ FactoryGirl.define do
     title "Test Post"
     body "My extremely profound thoughts on various matters"
   end
+
+  factory :invalid_post, parent: :post do
+    title nil
+  end
 end
