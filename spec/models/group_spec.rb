@@ -4,6 +4,8 @@ RSpec.describe Group, :type => :model do
   before do
     @group = FactoryGirl.create(:group)
     @name = FactoryGirl.create(:name)
+    @user = FactoryGirl.create(:user)
+    @group.users << @user
   end
 
   it "should have a valid factory" do
@@ -13,4 +15,12 @@ RSpec.describe Group, :type => :model do
   	@name = nil
     expect(@name).not_to be_valid
   end	
+   it "should allow multiple users in the same group" do
+    @group.user<<(FactoryGirl.build :user, email: = "test@user.com")
+    expect(@group.users.size).to eq(2)
+  end
+  it "should need a user in the group" do
+    @group.user = nil
+    expect(@group.user).not_to be_valid
+  end
 end

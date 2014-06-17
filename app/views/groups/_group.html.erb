@@ -1,0 +1,5 @@
+<li>
+  <span><%= link_to group.name, group_path(group), :class => 'name' %></span>
+  <span class="timestamp">founded <%= group.created_at.to_formatted_s(:long_ordinal) %></span>
+  <span class="description"><%= group.description %></span>
+</li>

@@ -9,5 +9,6 @@ class User < ActiveRecord::Base
   has_many :posts
 
   belongs_to :group
+  has_many :groups
 
 end
