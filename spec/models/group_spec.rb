@@ -7,7 +7,7 @@ RSpec.describe Group, :type => :model do
   end
 
   it "should have a valid factory" do
-  	expect(@ngroup).to be_valid
+  	expect(@group).to be_valid
   end
     it "should be invalid without a name" do
   	@name = nil
