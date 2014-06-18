@@ -6,5 +6,6 @@ FactoryGirl.define do
     name "test name"
     has_many_members 5
     description "test description"
+    user = "test@one.com"
   end
 end
