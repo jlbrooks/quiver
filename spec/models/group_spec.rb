@@ -19,7 +19,7 @@ RSpec.describe Group, :type => :model do
     expect(@group.users.size).to eq(2)
   end
   xit "should need a user in the group" do
-    @group.users.first = nil
-    expect(@group.users.first).not_to be_valid
+    @group.users = nil
+    expect(@group).not_to be_valid
   end
 end
