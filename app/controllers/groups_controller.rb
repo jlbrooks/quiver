@@ -9,7 +9,7 @@ class GroupsController < ApplicationController
       @groups = current_user.groups
       @user = current_user
     else
-      @groups = Post.all
+      @groups = Groups.all
     end
   end
 
@@ -63,7 +63,7 @@ class GroupsController < ApplicationController
   def destroy
     @group.destroy
     respond_to do |format|
-      format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
+      format.html { redirect_to groups_url, notice: 'Group was successfully disbanded.' }
       format.json { head :no_content }
     end
   end
