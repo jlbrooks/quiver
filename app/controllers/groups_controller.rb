@@ -27,6 +27,11 @@ class GroupsController < ApplicationController
   def edit
   end
 
+  # GET /groups/1/adduser
+  def adduser
+    @group = Group.find(params[:id])
+  end
+
   # POST /groups
   # POST /groups.json
   def create
@@ -58,7 +63,26 @@ class GroupsController < ApplicationController
     end
   end
 
-  # DELETE /groups/1
+  # Port /groups/1
+  def updateuser
+    respond_to do |format|
+      @user = gets.chomp
+      if @user
+        @group.user << @user
+      else
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+      if @group.update(group_params)
+        format.html { redirect_to @group, notice: 'User successfully added to the group.' }
+        format.json { render :show, status: :ok, location: @group }
+      else
+        format.html { render :edit }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+    # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
     @group.destroy

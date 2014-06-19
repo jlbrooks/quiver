@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :groups
+  get "groups/:id/adduser" => 'groups#adduser'
+
 
   resources :posts
   root :controller => 'static', :action => :home
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

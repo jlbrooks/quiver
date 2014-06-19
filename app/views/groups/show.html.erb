@@ -10,6 +10,12 @@
   <%= @group.description %>
 </p>
 
+<p>
+  <strong>Users</strong>
+  <%= @group.user.email %>
+</p>
+
 <%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %> |
+<%= link_to 'Back', groups_path %> | 
+ <%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group %> |
 <%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
