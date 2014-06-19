@@ -12,7 +12,11 @@
 
 <p>
   <strong>Users</strong>
-  <%= @group.user.email %>
+  	<ol><%  @group.users.each do |user| %>
+<li>
+  <span><%= user.email %></span>
+  </li>
+  <% end %>	</ol>
 </p>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |

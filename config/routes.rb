@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :groups
+
+  resources :posts do
+    resources :comments
+  end
   get "groups/:id/adduser" => 'groups#adduser'
-
-
-  resources :posts
   root :controller => 'static', :action => :home
 
 

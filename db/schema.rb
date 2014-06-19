@@ -13,6 +13,14 @@
 
 ActiveRecord::Schema.define(version: 20140619033504) do
 
+  create_table "comments", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "body"
+    t.integer  "post_id"
+    t.integer  "user_id"
+  end
+
   create_table "groups", force: true do |t|
     t.string   "name"
     t.text     "description"
