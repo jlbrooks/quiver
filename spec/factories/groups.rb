@@ -3,9 +3,7 @@ require 'faker'
 
 FactoryGirl.define do
   factory :group do
-    name "test name"
-    has_many_members 5
-    description "test description"
-    user = "test@one.com"
+    name  "test name"
+    description  "test description"
   end
 end
