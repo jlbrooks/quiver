@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :email
 
-  has_many :posts
-
   belongs_to :group
   has_many :groups
+  has_many :comments
+  has_many :posts
 
 end

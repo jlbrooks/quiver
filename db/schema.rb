@@ -1,4 +1,3 @@
-
 # encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
@@ -12,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617003456) do
+ActiveRecord::Schema.define(version: 20140619025644) do
 
   create_table "comments", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "body"
     t.integer  "post_id"
+    t.integer  "user_id"
   end
 
   create_table "groups", force: true do |t|
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140617003456) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "posts", force: true do |t|
