@@ -16,7 +16,7 @@ RSpec.describe Group, :type => :model do
     expect(@name).not_to be_valid
   end	
    it "should allow multiple users in the same group" do
-    @group.user<<(FactoryGirl.build :user, email: = "test@user.com")
+    @group.user<<(FactoryGirl.build(:user, :email => "test@user.com"))
     expect(@group.users.size).to eq(2)
   end
   it "should need a user in the group" do
