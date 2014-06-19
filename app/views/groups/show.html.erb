@@ -6,14 +6,10 @@
 </p>
 
 <p>
-  <strong>Has many members:</strong>
-  <%= @group.has_many_members %>
-</p>
-
-<p>
   <strong>Description:</strong>
   <%= @group.description %>
 </p>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back', groups_path %> |
+<%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>

@@ -1,16 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe Group, :type => :model do
+  before do
+    @group = FactoryGirl.create(:group)
+    @name = FactoryGirl.create(:name)
+    @user = FactoryGirl.create(:user)
+    @group.users << @user
+  end
+
   it "should have a valid factory" do
-  	FactoryGirl.create(:group).should be_valid
+  	expect(@group).to be_valid
   end
-  it "should be invalid without members" do
-  	FactoryGirl.build(:group, :has_many_members => nil).should_not be_valid
-  end
-  it "should be invalid without a name" do
-  	FactoryGirl.build(:group, :name => nil).should_not be_valid
+    it "should be invalid without a name" do
+  	@name = nil
+    expect(@name).not_to be_valid
   end	
-  it "should be invalid without a unique group name" do
-  	FactoryGirl.build(:group, :name => "test").should_not be_valid
+   it "should allow multiple users in the same group" do
+    @group.user<<(FactoryGirl.build :user, email: = "test@user.com")
+    expect(@group.users.size).to eq(2)
+  end
+  it "should need a user in the group" do
+    @group.user = nil
+    expect(@group.user).not_to be_valid
   end
 end
