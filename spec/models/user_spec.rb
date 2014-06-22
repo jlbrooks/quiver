@@ -18,6 +18,20 @@ RSpec.describe User, :type => :model do
     expect(@user).not_to be_valid
   end
 
+  it "should not be valid without a first name" do
+    @user.first_name = nil
+    expect(@user).not_to be_valid
+  end
+
+  it "should not be valid without a last name" do
+    @user.last_name = nil
+    expect(@user).not_to be_valid
+  end
+
+  it "should concatenate first and last names" do
+    expect(@user.name).to eq(@user.first_name + " " + @user.last_name)
+  end
+
   it "should not allow duplicate emails" do
     expect(FactoryGirl.build(:user)).not_to be_valid
   end

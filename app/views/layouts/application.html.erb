@@ -15,7 +15,7 @@
     <li class="navLeft"><%= link_to "My Posts", posts_path %></li>
     <li class="navLeft"><%= link_to "My Groups",
       groups_path %></li>
-    <li class="account"><%= link_to "Edit Profile", edit_user_registration_path %></li>
+    <li class="account"><%= link_to current_user.first_name + "'s Profile", edit_user_registration_path %></li>
     <li class="account"><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
   <% end %>
 </ul>
