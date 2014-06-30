@@ -7,6 +7,7 @@ class PostsController < ApplicationController
   def index
     if user_signed_in?
       @posts = current_user.posts
+      create_excerpts(50)
       @user = current_user
     else
       @posts = Post.all
@@ -16,7 +17,6 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-    @post = Post.find(params[:id])
     @comments = @post.comments
   end
 
@@ -79,5 +79,11 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :body)
+    end
+
+    def create_excerpts(words)
+      for post in @posts
+        post.excerpt = post.body.split[0...words].join(' ') + '...'
+      end
     end
 end

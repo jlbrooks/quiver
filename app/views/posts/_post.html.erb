@@ -1,5 +1,5 @@
 <li>
   <span><%= link_to post.title, post_path(post), :class => 'title' %></span>
   <span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> by <%= post.user.name %></span>
-  <span class="body"><%= post.body %></span>
+  <span class="body"><%= post.excerpt %></span>
 </li>
