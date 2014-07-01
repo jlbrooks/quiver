@@ -1,12 +1,20 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { registrations: 'registrations'}
+
+
   resources :groups
+
+  patch "groups/:id/updateuser" => 'groups#updateuser'
+  
+
 
   resources :posts do
     resources :comments
   end
 
   get "groups/:id/adduser" => 'groups#adduser'
+
+
 
   root :controller => 'static', :action => :home
 

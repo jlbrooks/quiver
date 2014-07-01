@@ -1,0 +1,12 @@
+<% @user = current_user %>
+<% @groups = @user.groups %>
+
+<% if @user.groups.any? %>
+  <h1><%= @user.email %>'s Groups</h1>
+  <ol class="groups"><%= render @groups%></ol>
+<% end %>
+
+<br>
+<% if user_signed_in? %>
+<%= link_to 'New Group', new_group_path, :class => "button" %>
+<% end %>

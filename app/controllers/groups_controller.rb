@@ -29,7 +29,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/adduser
   def adduser
-    @group = Group.find(params[:id])
+    @group = set_group
   end
 
   # POST /groups
@@ -63,20 +63,21 @@ class GroupsController < ApplicationController
     end
   end
 
-  # Port /groups/1
+  # PATCH/PUT /groups/1
   def updateuser
+    @user = User.find_by email:(:search_user_email)
+    @group = set_group
     respond_to do |format|
-      @user = gets.chomp
       if @user
-        @group.user << @user
+        if @group.users << @user
+            format.html { redirect_to @group, notice: 'User successfully added to the group.' }
+            format.json { render :show, status: :ok, location: @group }
+        else
+            format.html { render :adduser, notice: 'user unable to be added exist' }
+            format.json { render json: @group.errors, status: :unprocessable_entity }
+        end
       else
-        format.json { render json: @group.errors, status: :unprocessable_entity }
-      end
-      if @group.update(group_params)
-        format.html { redirect_to @group, notice: 'User successfully added to the group.' }
-        format.json { render :show, status: :ok, location: @group }
-      else
-        format.html { render :edit }
+        format.html { render :adduser, notice: 'user does not exist.' }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
@@ -100,6 +101,6 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:name, :description, user: :email)
+      params.require(:group).permit(:name, :description, :users)
     end
 end
