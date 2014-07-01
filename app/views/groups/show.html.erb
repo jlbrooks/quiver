@@ -21,9 +21,9 @@
 	<h1>Posts from users</h1>
 	<% @group.users.each do |user|%>
   		<% if user.posts.any? %>
-  			<strong> <%= "Posts by #{user.name}" %> </strong>
+  			<h3> <%= "most recent post by #{user.name}" %> </h3>
   			<ol class="posts">
-  				<% user.posts.last(3).each do |post| %>
+  				<% user.posts.last(1).each do |post| %>
   					<span><b><%= post.title %></b></span>
   					<span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> </span>
  					<span class="body"><%= post.body %></span>
@@ -37,7 +37,8 @@
 <br>
  </p>
 
+<%= link_to 'View users', controller: "groups", action: "viewusers", id: @group.id %> |
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %> | 
- <%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> |
+<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> |
 <%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>

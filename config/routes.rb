@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   get "groups/:id/adduser" => 'groups#adduser'
+  get "groups/:id/viewusers" => 'groups#viewusers'
 
 
 

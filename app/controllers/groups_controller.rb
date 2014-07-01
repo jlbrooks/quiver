@@ -32,6 +32,11 @@ class GroupsController < ApplicationController
     @group = set_group
   end
 
+  # GET /groups/1/viewuser
+  def viewusers
+    @group = set_group
+  end
+
   # POST /groups
   # POST /groups.json
   def create
