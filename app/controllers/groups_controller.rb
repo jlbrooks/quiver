@@ -70,19 +70,19 @@ class GroupsController < ApplicationController
 
   # PATCH/PUT /groups/1
   def updateuser
-    @user = User.find_by email:(:search_user_email)
+    @user = User.find_by email:(params[:search_user_email])
     @group = set_group
     respond_to do |format|
-      if @user
+      if @user 
         if @group.users << @user
             format.html { redirect_to @group, notice: 'User successfully added to the group.' }
             format.json { render :show, status: :ok, location: @group }
         else
-            format.html { render :adduser, notice: 'user unable to be added exist' }
+            format.html { render :adduser }
             format.json { render json: @group.errors, status: :unprocessable_entity }
         end
       else
-        format.html { render :adduser, notice: 'user does not exist.' }
+        format.html { redirect_to @group, notice: 'user does not exist or is already part of the group.' }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
