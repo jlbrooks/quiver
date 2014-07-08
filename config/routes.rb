@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :groups
 
   patch "groups/:id/updateuser" => 'groups#updateuser'
+  delete "groups/:id/removeuser/:user_id" => 'groups#removeuser'
   
 
 

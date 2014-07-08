@@ -88,6 +88,26 @@ class GroupsController < ApplicationController
     end
   end
 
+  #DELETE /groups/1
+  def removeuser
+    @user = User.find_by id:(params[:user_id])
+    @group = set_group
+    respond_to do |format|
+      if @user 
+         if @group.users.delete(@user)
+              format.html { redirect_to @group, notice: 'user successfully removed from group.' }
+              format.json { render :show, status: :ok, location: @group }
+          else
+              format.html { render :show }
+              format.json { render json: @group.errors, status: :unprocessable_entity }
+          end
+      else
+          format.html { redirect_to @group, notice: 'user does not exist or has already been removed.' }
+          format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+end
+
     # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
