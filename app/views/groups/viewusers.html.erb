@@ -1,7 +1,28 @@
 <h1> <%= "#{@group.name}'s users" %> </h1>
 
 
-<%= render 'formviewusers' %>
+<p>
+<% @group.users.each do |user| %>
+	<ol class = "users">
+		<h2><%= "#{user.name}" %></h2>
+		<h3><%= "email: #{user.email}" %></h3>
+		  <%= link_to 'Remove user from group', {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
+		<br>
+		<% if user.posts.any? %>
+			<h3> <%= "Recent posts from #{user.first_name}:" %> </h3>
+  			<ol class="posts">
+  				<% user.posts.last(3).each do |post| %>
+  					<span><b><%= post.title %></b></span>
+  					<span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> </span>
+ 					<span class="body"><%= post.body %></span>
+ 					<br>
+ 					<br>
+  				<% end %>
+  			</ol>
+  		<% end %>
+	</ol>
+<% end %>
+</p>
 
 
 <%= link_to 'Show', @group %> |
