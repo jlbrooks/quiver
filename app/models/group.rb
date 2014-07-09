@@ -1,4 +1,6 @@
 class Group < ActiveRecord::Base
+  extend ActiveModel::Naming
+  
 	validates :name, presence: true
 	validates_uniqueness_of :name
 

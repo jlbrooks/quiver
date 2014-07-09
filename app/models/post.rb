@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  extend ActiveModel::Naming
+
   validates :title, presence: true
   validates :body, presence: true
 
