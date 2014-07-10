@@ -6,18 +6,23 @@ Rails.application.routes.draw do
 
   patch "groups/:id/updateuser" => 'groups#updateuser'
   delete "groups/:id/removeuser/:user_id" => 'groups#removeuser'
+
   
 
+  post "posts/:group_id/create" => 'posts#create'
 
   resources :posts do
     resources :comments
   end
 
+  get "posts/:group_id/creategrouppost" => 'posts#creategrouppost'
+
+
   get "groups/:id/adduser" => 'groups#adduser'
   get "groups/:id/viewusers" => 'groups#viewusers'
+  get "groups/:id/showgroupposts" => 'groups#showgroupposts'
 
-
-
+  
   root :controller => 'static', :action => :home
 
 

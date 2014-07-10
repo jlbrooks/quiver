@@ -37,6 +37,10 @@ class GroupsController < ApplicationController
     @group = set_group
   end
 
+  def showgroupposts
+    @group = set_group
+  end
+
   # POST /groups
   # POST /groups.json
   def create
