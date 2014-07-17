@@ -1,5 +1,7 @@
 class Group < ActiveRecord::Base
   extend ActiveModel::Naming
+
+ 	serialize :admins
   
 	validates :name, presence: true
 	validates_uniqueness_of :name
@@ -13,6 +15,9 @@ class Group < ActiveRecord::Base
 			raise ActiveRecord::Rollback 
 		end
 	end
+
+
+
 
 
 

@@ -38,7 +38,9 @@
 
 <%= link_to 'View users', controller: "groups", action: "viewusers", id: @group.id %> |
 <%= link_to 'Show all group posts', controller: "groups", action: "showgroupposts", id: @group.id %> |
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %> | 
-<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> |
-<%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
+<%= link_to 'Back to group index', groups_path %> | 
+<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> 
+<% if @group.admins.include?(current_user.id) %>
+  | <%= link_to 'Edit group', edit_group_path(@group) %>
+  | <%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
+<% end %>

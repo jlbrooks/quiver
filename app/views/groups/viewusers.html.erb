@@ -6,8 +6,20 @@
 	<ol class = "users">
 		<h2><%= "#{user.name}" %></h2>
 		<h3><%= "email: #{user.email}" %></h3>
-		  <%= link_to 'Remove user from group', {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
-		<br>
+		<% if @group.admins.include?(user.id)  %>
+			<h3> <%= "#{@group.name} admin" %> </h3>
+		<% end %>
+		<% if @group.admins.include?(current_user.id) %>
+	        <% if @group.admins.include?(user.id) == false %>
+	        	<%= link_to 'Make user admin', {controller: "groups", action: "makeadmin", :user_id => user.id}, method: :patch, data:{confirm: "are you sure?"} %>
+	        <% end %>
+	        	<%= link_to 'Remove user from group', {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
+			    <br>
+				<br>
+
+	    <% end %>
+
+
 		<% if user.posts.any? %>
 			<h3> <%= "Recent posts from #{user.first_name}:" %> </h3>
   			<ol class="posts">
