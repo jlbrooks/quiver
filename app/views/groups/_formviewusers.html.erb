@@ -3,6 +3,7 @@
 	<ol class = "users">
 		<h2><%= "#{user.name}" %></h2>
 		<h3><%= "email: #{user.email}" %></h3>
+		  <%= link_to 'Remove user from group', {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
 		<br>
 		<% if user.posts.any? %>
 			<h3> <%= "Recent posts from #{user.first_name}:" %> </h3>
@@ -18,5 +19,4 @@
   		<% end %>
 	</ol>
 <% end %>
-<%= "test" %>
 </p>

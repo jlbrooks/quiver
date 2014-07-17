@@ -29,11 +29,19 @@ class PostsController < ApplicationController
   def edit
   end
 
+    #GET /group/1/creategrouppost
+  def creategrouppost
+    @group = Group.find_by id:(params[:group_id])
+    @post = Post.new
+  end
+
   # POST /posts
   # POST /posts.json
   def create
     @post = Post.new(post_params)
     @post.user = current_user
+    @post.group = Group.find_by id:(3)
+    
 
     respond_to do |format|
       if @post.save

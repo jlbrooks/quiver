@@ -37,11 +37,18 @@ class GroupsController < ApplicationController
     @group = set_group
   end
 
+  def showgroupposts
+    @group = set_group
+  end
+
   # POST /groups
   # POST /groups.json
   def create
     @group = Group.new(group_params)
     @group.users << current_user
+    @group.admins = Array.new
+    @group.admins << current_user.id
+    @group.save
 
     respond_to do |format|
       if @group.save
@@ -88,6 +95,55 @@ class GroupsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /groups/1
+  def makeadmin
+    @user = User.find_by id:(params[:user_id])
+    @group = set_group
+    respond_to do |format|
+      if @user
+        if @group.admins.include?(@user.id) == false
+          if @group.admins << @user.id
+            format.html { redirect_to @group, notice: 'User successfully admin-ified.' }
+            format.json { render :show, status: :ok, location: @group }
+            @group.save
+          else
+            format.html { render :adduser }
+            format.json { render json: @group.errors, status: :unprocessable_entity }
+          end
+        else
+          format.html { redirect_to @group, notice: 'User is already an admin.' }
+          format.json { render json: @group.errors, status: :unprocessable_entity }
+        end
+      else
+        format.html { redirect_to @group, notice: 'User does not exist.' }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+  #DELETE /groups/1
+  def removeuser
+    @user = User.find_by id:(params[:user_id])
+    @group = set_group
+    respond_to do |format|
+      if @user 
+         if @group.users.delete(@user)
+              format.html { redirect_to @group, notice: 'user successfully removed from group.' }
+              format.json { render :show, status: :ok, location: @group }
+          else
+              format.html { render :show }
+              format.json { render json: @group.errors, status: :unprocessable_entity }
+          end
+      else
+          format.html { redirect_to @group, notice: 'user does not exist or has already been removed.' }
+          format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
+    end
+end
+
+
+
     # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
@@ -106,6 +162,6 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:name, :description, :users)
+      params.require(:group).permit(:name, :description, :users, :admins)
     end
 end

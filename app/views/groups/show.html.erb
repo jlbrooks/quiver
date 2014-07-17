@@ -18,27 +18,29 @@
 </p>
 
 <p>
-	<h1>Posts from users</h1>
-	<% @group.users.each do |user|%>
-  		<% if user.posts.any? %>
-  			<h3> <%= "most recent post by #{user.name}" %> </h3>
-  			<ol class="posts">
-  				<% user.posts.last(1).each do |post| %>
-  					<span><b><%= post.title %></b></span>
-  					<span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> </span>
- 					<span class="body"><%= post.body %></span>
- 					<br>
- 					<br>
-  				<% end %>
-  			</ol>
-  		<% end %>	
-	<% end %>
+  <% if @group.posts.any? %>
+  	<h1>Posts from users</h1>
+    			<ol class="posts">
+    				<% @group.posts.order(:created_at).reverse_order.first(3).each do |post| %>
+              <% @user = post.user %>
+    					  <span><%= link_to post.title, post_path(post), :class => 'title' %></span>
+    					<span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> by <%= @user.name %>  </span>
+   					<span class="body"><%= post.body %></span>
+   					<br>
+   					<br>
+    				<% end %>
+    			</ol>
+  <% end %>
+    <%= link_to 'create group post', controller: "posts", action: "creategrouppost", group_id: @group.id %>
 
 <br>
  </p>
 
 <%= link_to 'View users', controller: "groups", action: "viewusers", id: @group.id %> |
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %> | 
-<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> |
-<%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
+<%= link_to 'Show all group posts', controller: "groups", action: "showgroupposts", id: @group.id %> |
+<%= link_to 'Back to group index', groups_path %> | 
+<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> 
+<% if @group.admins.include?(current_user.id) %>
+  | <%= link_to 'Edit group', edit_group_path(@group) %>
+  | <%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
+<% end %>
