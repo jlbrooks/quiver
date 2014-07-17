@@ -16,9 +16,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  get "posts/:group_id/creategrouppost" => 'posts#creategrouppost'
-
-
+ 
   get "groups/:id/adduser" => 'groups#adduser'
   get "groups/:id/viewusers" => 'groups#viewusers'
   get "groups/:id/showgroupposts" => 'groups#showgroupposts'

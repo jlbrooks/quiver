@@ -1,6 +1,6 @@
 <h1> All group posts </h1>
 
-<%= link_to 'create group post', controller: "posts", action: "creategrouppost", group_id: @group.id %>
+<%= link_to 'create group post', controller: "posts", action: "new" %>
 
 <p>
   <% if @group.posts.any? %>

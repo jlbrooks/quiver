@@ -1,6 +1,7 @@
 <%= form_for(@post) do |f| %>
   <%= render "/shared/error", model: @post %>
 
+
   <div class="field">
     <%= f.label :title %><br>
     <%= f.text_field :title %>
@@ -8,6 +9,10 @@
   <div class="field">
     <%= f.label :body %><br>
     <%= f.text_area :body, :id => "input_body" %>
+  </div>
+  <div class="field">
+    <%= f.label :group  %><br>
+    <%= f.collection_select(:group_id, Group.all, :id, :name, :include_blank => "Post to...") %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -31,7 +31,6 @@ class PostsController < ApplicationController
 
     #GET /group/1/creategrouppost
   def creategrouppost
-    @group = Group.find_by id:(params[:group_id])
     @post = Post.new
   end
 
@@ -40,9 +39,9 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.user = current_user
-    @post.group = Group.find_by id:(3)
-    
-
+    if post_params[:group_id] != "" and post_params[:group_id] != nil
+      @post.group = Group.find(post_params[:group_id])
+    end
     respond_to do |format|
       if @post.save
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
@@ -86,7 +85,7 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :group_id)
     end
 
     def create_excerpts(words)
