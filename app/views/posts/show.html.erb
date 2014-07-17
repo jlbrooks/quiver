@@ -8,6 +8,7 @@
 
 <% if user_signed_in? %>
 <%= link_to 'Edit', edit_post_path(@post), class: 'navButton' %>
+<%= link_to 'Delete', post_path(@post), :method => :delete, class: 'navButton' %>
 <% end %>
 <%= link_to 'Back', posts_path, class: 'navButton' %>
 
