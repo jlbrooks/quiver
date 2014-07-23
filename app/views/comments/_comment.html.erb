@@ -1,5 +1,5 @@
 <li>
   <span class="timestamp">Posted by <%= comment.user.name %> on <%= comment.created_at.to_formatted_s(:long_ordinal) %></span>
   <span class="body"><%= comment.body %></span>
-  <%= link_to 'Delete', post_comment_path(comment.post, comment), :method => :delete, class: 'navButton' %>
+  <%= link_to 'Delete', post_comment_path(comment.post, comment), :method => :delete %>
 </li>

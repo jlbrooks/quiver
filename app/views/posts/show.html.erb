@@ -14,10 +14,10 @@
 
 <%= link_to "Comment", new_post_comment_path(@post), class: 'navButton' %>
 
-<p> 
-  <strong>Comments:</strong>
-</p>
+<div id='comments'>
+  <p id='title'> Comments:</p>
 
-<% if @post.comments.any? %>
-  <ol><%= render @comments%></ol>
-<% end %>
+  <% if @post.comments.any? %>
+    <ol class="list"><%= render @comments%></ol>
+  <% end %>
+</div>
