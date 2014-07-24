@@ -14,14 +14,13 @@
 <button data-bind="click: function() { show_comment_function() }" class='navButton'>Comment</button>
 
 <%= render '/comments/form' %>
-
-<div id='comments'>
-  <p id='title'> Comments:</p>
-
-  <% if @post.comments.any? %>
-    <ol class="list"><%= render @comments%></ol>
-  <% end %>
+<p id='title'> Comments:</p>
+<div id='comments' data-bind="foreach: comments">
+  <div class="comment" data-bind="template: {name: 'comment_template'}"></div> 
 </div>
+
+<%= render '/comments/comment' %>
+
 <script type="text/javascript">
   var comments = '<%= raw(escape_javascript(@comment_js)) %>'
   var post_id = <%= @post.id %>

@@ -4,23 +4,26 @@
 class Comment
   constructor: (data) ->
     data = data ? {}
+    @user = ko.observable(data.user)
     @body = ko.observable(data.body)
+    @post = ko.observable(data.post)
 
 
 class CommentViewModel
   constructor: (data) ->
     @show_new_comment = ko.observable(false)
     @comments = ko.observableArray()
-    @comment_hash = JSON.parse(data.comments)
-    for id,body of @comment_hash
-      @comments.push(new Comment({id: id, body: body}))
     @post_id = data.post
+    @comment_hash = JSON.parse(data.comments)
+    for id,data of @comment_hash
+      @comments.push(new Comment({id: id, body: data[0], user: data[1], post: @post_id}))
     @newMessage = ko.observable()
     @errorMessage = ko.observable()
     @temp_comment = new Comment()
 
   addComment: () =>
     json_data = ko.toJS(@temp_comment)
+    console.log json_data
     $.ajax(
       type: 'POST'
       url: '/posts/' + @post_id + '/comments.json'
@@ -28,6 +31,7 @@ class CommentViewModel
       data: { comment: json_data }
       success: (createdItem) =>
         @newMessage("Comment successfully created")
+        @comments.push(@temp_comment)
         @temp_comment = new Comment()
       error: (msg) =>
         response = JSON.parse(msg.responseText)

@@ -1,5 +1,4 @@
-<li>
-  <span class="timestamp">Posted by <%= comment.user.name %> on <%= comment.created_at.to_formatted_s(:long_ordinal) %></span>
-  <span class="body"><%= comment.body %></span>
-  <%= link_to 'Delete', post_comment_path(comment.post, comment), :method => :delete %>
-</li>
+<script type="text/html" id="comment_template">
+  <p class="timestamp">Posted by <span data-bind="text: user"></span></p>
+  <span class="body" data-bind="text: body"></span>
+</script>
