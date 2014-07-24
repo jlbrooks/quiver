@@ -57,3 +57,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'devise'
+
+gem 'knockoutjs-rails'

@@ -11,8 +11,9 @@
 <%= link_to 'Delete', post_path(@post), :method => :delete, class: 'navButton' %>
 <% end %>
 <%= link_to 'Back', posts_path, class: 'navButton' %>
+<button data-bind="click: function() { show_comment_function() }" class='navButton'>Comment</button>
 
-<%= link_to "Comment", new_post_comment_path(@post), class: 'navButton' %>
+<%= render '/comments/form' %>
 
 <div id='comments'>
   <p id='title'> Comments:</p>
@@ -21,3 +22,9 @@
     <ol class="list"><%= render @comments%></ol>
   <% end %>
 </div>
+<script type="text/javascript">
+  var comments = '<%= raw(escape_javascript(@comment_js)) %>'
+  var post_id = <%= @post.id %>
+  var viewModel = new CommentViewModel({comments: comments, post: post_id})
+  ko.applyBindings(viewModel)
+</script>

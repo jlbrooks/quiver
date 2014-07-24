@@ -1,11 +1,12 @@
-<%= form_for [@post, @comment], :url => url_for([@post, @comment]) do |f| %>
-  <%= render "/shared/error", model: @comment %>
-
-  <div class="field">
-    <%= f.label :body %><br>
-    <%= f.text_area :body %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<div class="comment_wrapper" data-bind="visible: show_new_comment" >
+  <h3 data-bind="text: errorMessage"></h3>
+  <form id="form">
+    <div class="field">
+      <label for="comment_body">Body</label><br />
+      <input id="comment_body" data-bind="value: temp_comment.body" />
+    </div>
+    <div class="actions">
+      <button data-bind="click: function() { addComment() }">Create Comment</button>
+    </div>
+  </form>
+</div>

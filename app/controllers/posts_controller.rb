@@ -18,6 +18,8 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @comments = @post.comments
+    @comment_js = Hash[ @comments.map{ |c| [c.id, c.body]}].to_json
+    @comment = Comment.new
   end
 
   # GET /posts/new
