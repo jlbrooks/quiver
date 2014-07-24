@@ -3,6 +3,14 @@
 
 <p>
 <% @group.users.each do |user| %>
+	<% @adminremovalmessage = "Remove admin rights" %>
+	<% if user.id == current_user.id
+		@adminremovalmessage = "Stepdown from admin-hood"
+	end %>
+	<% @userremovalmessage = "Remove user from group." %>
+	<% if user.id == current_user.id
+		@userremovalmessage = "leave group"
+	end %>
 	<ol class = "users">
 		<h2><%= "#{user.name}" %></h2>
 		<h3><%= "email: #{user.email}" %></h3>
@@ -11,11 +19,13 @@
 		<% end %>
 		<% if @group.admins.include?(current_user.id) %>
 	        <% if @group.admins.include?(user.id) == false %>
-	        	<%= link_to 'Make user admin', {controller: "groups", action: "makeadmin", :user_id => user.id}, method: :patch, data:{confirm: "are you sure?"} %>
+	        	<%= link_to 'Make user an admin', {controller: "groups", action: "makeadmin", :user_id => user.id}, method: :patch, data:{confirm: "are you sure?"} %>
+	        <% elsif @group.admins.include?(user.id) == true and @group.admins.size >= 2 %>
+	        	<%= link_to @adminremovalmessage, {controller: "groups", action: "removeadmin", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %> 
 	        <% end %>
-	        	<%= link_to 'Remove user from group', {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
-			    <br>
-				<br>
+	        <%= link_to @userremovalmessage, {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
+			<br>
+			<br>
 
 	    <% end %>
 

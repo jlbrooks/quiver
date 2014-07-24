@@ -99,24 +99,26 @@ class GroupsController < ApplicationController
   def makeadmin
     @user = User.find_by id:(params[:user_id])
     @group = set_group
-    respond_to do |format|
-      if @user
-        if @group.admins.include?(@user.id) == false
-          if @group.admins << @user.id
-            format.html { redirect_to @group, notice: 'User successfully admin-ified.' }
-            format.json { render :show, status: :ok, location: @group }
-            @group.save
+    if @group.admins.include?(current_user.id)
+      respond_to do |format|
+        if @user 
+          if @group.admins.include?(@user.id) == false
+            if @group.admins << @user.id
+              format.html { redirect_to @group, notice: 'User successfully admin-ified.' }
+              format.json { render :show, status: :ok, location: @group }
+              @group.save
+            else
+              format.html { render :adduser }
+              format.json { render json: @group.errors, status: :unprocessable_entity }
+            end
           else
-            format.html { render :adduser }
+            format.html { redirect_to @group, notice: 'User is already an admin.' }
             format.json { render json: @group.errors, status: :unprocessable_entity }
           end
         else
-          format.html { redirect_to @group, notice: 'User is already an admin.' }
+          format.html { redirect_to @group, notice: 'User does not exist.' }
           format.json { render json: @group.errors, status: :unprocessable_entity }
         end
-      else
-        format.html { redirect_to @group, notice: 'User does not exist.' }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -126,18 +128,20 @@ class GroupsController < ApplicationController
   def removeuser
     @user = User.find_by id:(params[:user_id])
     @group = set_group
-    respond_to do |format|
-      if @user 
-         if @group.users.delete(@user)
-              format.html { redirect_to @group, notice: 'user successfully removed from group.' }
-              format.json { render :show, status: :ok, location: @group }
-          else
-              format.html { render :show }
-              format.json { render json: @group.errors, status: :unprocessable_entity }
-          end
-      else
-          format.html { redirect_to @group, notice: 'user does not exist or has already been removed.' }
-          format.json { render json: @group.errors, status: :unprocessable_entity }
+    if @group.admins.include?(current_user.id)
+      respond_to do |format|
+        if @user 
+           if @group.users.delete(@user)
+                format.html { redirect_to @group, notice: 'user successfully removed from group.' }
+                format.json { render :show, status: :ok, location: @group }
+            else
+                format.html { render :show }
+                format.json { render json: @group.errors, status: :unprocessable_entity }
+            end
+        else
+            format.html { redirect_to @group, notice: 'user does not exist or has already been removed.' }
+            format.json { render json: @group.errors, status: :unprocessable_entity }
+        end
       end
     end
 end
@@ -147,10 +151,40 @@ end
     # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
-    @group.destroy
-    respond_to do |format|
-      format.html { redirect_to groups_url, notice: 'Group was successfully disbanded.' }
-      format.json { head :no_content }
+    if @group.admins.include?(current_user.id)
+      @group.destroy
+      respond_to do |format|
+        format.html { redirect_to groups_url, notice: 'Group was successfully disbanded.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html {redirect_to :back, notice: "you do not have the rights to do that..."}
+        format.json {render :show, status: :ok, location: @group}
+      end
+    end
+  end
+
+  # DELETE /groups/1
+  def removeadmin
+    @user = User.find_by id:(params[:user_id])
+    @group = set_group
+    if @group.admins.include?(current_user.id)
+      respond_to do |format|
+        if @group.admins.include?(@user.id)
+          if @group.admins.delete(@user.id)
+            format.html { redirect_to :back, notice: 'admin rights removed.' }
+            format.json { render :back, status: :ok, location: @group }
+          else
+            format.html { redirect_to :back, notice: 'could not remove admin rights.' }
+            format.json { render json: @group.errors, status: :unprocessable_entity }
+          end
+        else
+          format.html { redirect_to @group, notice: 'user does not exist or has already been removed.' }
+          format.json { render json: @group.errors, status: :unprocessable_entity }
+        end
+      end
+      @group.save
     end
   end
 
