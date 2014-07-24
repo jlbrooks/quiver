@@ -1,25 +1,33 @@
 <p>
-  <strong>Name:</strong>
-  <%= @group.name %>
+  <h1><%= @group.name %></h1>
+  
 </p>
 
 <p>
-  <strong>Description:</strong>
-  <%= @group.description %>
+  <strong><%= @group.description %></strong>
+  
 </p>
 
 <p>
-  <h1>Users</h1>
+  <h2>Users</h2>
   	<ol><%  @group.users.each do |user| %>
+      <% @adminstatus = "" %>
+      <% if @group.admins.include?(user.id)
+        @adminstatus = " <- one of your lovely admins" %>
+      <% end %>
 <li>
-  <span><%= "#{user.name} - (#{user.email})" %></span>
+  <span><%= "#{user.name} - (#{user.email}) #{@adminstatus}" %></span>
   </li>
   <% end %>	</ol>
 </p>
-
+<br>
+<%= link_to 'Add user to group', {controller: "groups", action: "adduser", id: @group.id}, class: "navButton" %>  |
+<%= link_to 'View users', {controller: "groups", action: "viewusers", id: @group.id}, class: "navButton" %>
+<br>
+<br>
 <p>
   <% if @group.posts.any? %>
-  	<h1>Posts from users</h1>
+  	<h2>Posts from users</h2>
     			<ol class="posts">
     				<% @group.posts.order(:created_at).reverse_order.first(3).each do |post| %>
               <% @user = post.user %>
@@ -31,16 +39,18 @@
     				<% end %>
     			</ol>
   <% end %>
-    <%= link_to 'create group post', controller: "posts", action: "new" %>
-
+    <%= link_to 'create group post', {controller: "posts", action: "new"}, class: "navButton" %> |
+    <%= link_to 'Show all group posts', {controller: "groups", action: "showgroupposts", id: @group.id}, class: "navButton" %>
+<br>
+<br>
 <br>
  </p>
 
-<%= link_to 'View users', controller: "groups", action: "viewusers", id: @group.id %> |
-<%= link_to 'Show all group posts', controller: "groups", action: "showgroupposts", id: @group.id %> |
-<%= link_to 'Back to group index', groups_path %> | 
-<%= link_to 'Add user to group', controller: "groups", action: "adduser", id: @group.id %> 
+
+<%= link_to 'Back to group index', groups_path, class: "navButton" %> 
 <% if @group.admins.include?(current_user.id) %>
-  | <%= link_to 'Edit group', edit_group_path(@group) %>
-  | <%= link_to 'Disband', @group, method: :delete, data: { confirm: "Are you sure?"} %>
+  | <%= link_to 'Edit group details', edit_group_path(@group), class: "navButton" %>
+  | <%= link_to 'Disband group', @group, method: :delete, data: { confirm: "Destroy this fellowship?"}, class: "navButton" %>
 <% end %>
+<br>
+<br>

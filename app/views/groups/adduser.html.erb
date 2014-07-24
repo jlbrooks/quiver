@@ -6,7 +6,9 @@
       <%= email_field_tag (:search_user_email) %>
       <%= submit_tag 'Add User', name: nil %>
   <% end %>
+<br>
+<br>
+<br>
 
-
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back to group', @group, class: "navButton" %> |
+<%= link_to 'Return to group index', groups_path, class: "navButton" %>

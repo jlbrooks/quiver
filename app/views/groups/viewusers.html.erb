@@ -4,12 +4,16 @@
 <p>
 <% @group.users.each do |user| %>
 	<% @adminremovalmessage = "Remove admin rights" %>
+	<% @adminremovalconfirmation = "Are you want to de-adminify #{user.first_name}?" %>
 	<% if user.id == current_user.id
 		@adminremovalmessage = "Stepdown from admin-hood"
+		@adminremovalconfirmation = "Give up the power?"
 	end %>
-	<% @userremovalmessage = "Remove user from group." %>
+	<% @userremovalmessage = "Remove #{user.first_name} from group." %>
+	<% @userremovalconfirmation = "Kick #{user.first_name} to the curb?" %>
 	<% if user.id == current_user.id
-		@userremovalmessage = "leave group"
+		@userremovalmessage = "Leave group"
+		@userremovalconfirmation = "Move on to bigger things?"
 	end %>
 	<ol class = "users">
 		<h2><%= "#{user.name}" %></h2>
@@ -19,11 +23,11 @@
 		<% end %>
 		<% if @group.admins.include?(current_user.id) %>
 	        <% if @group.admins.include?(user.id) == false %>
-	        	<%= link_to 'Make user an admin', {controller: "groups", action: "makeadmin", :user_id => user.id}, method: :patch, data:{confirm: "are you sure?"} %>
+	        	<%= link_to "Make #{user.first_name} an admin", {controller: "groups", action: "makeadmin", :user_id => user.id}, method: :patch, data:{confirm: "are you sure you trust #{user.first_name} with that kind of power?"}, class: "navButton" %>
 	        <% elsif @group.admins.include?(user.id) == true and @group.admins.size >= 2 %>
-	        	<%= link_to @adminremovalmessage, {controller: "groups", action: "removeadmin", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %> 
+	        	<%= link_to @adminremovalmessage, {controller: "groups", action: "removeadmin", :user_id => user.id}, method: :delete, data:{confirm: @adminremovalconfirmation}, class: "navButton" %> 
 	        <% end %>
-	        <%= link_to @userremovalmessage, {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: "are you sure?"} %>
+	        <%= link_to @userremovalmessage, {controller: "groups", action: "removeuser", :user_id => user.id}, method: :delete, data:{confirm: @userremovalconfirmation}, class: "navButton" %>
 			<br>
 			<br>
 
@@ -34,18 +38,24 @@
 			<h3> <%= "Recent posts from #{user.first_name}:" %> </h3>
   			<ol class="posts">
   				<% user.posts.last(3).each do |post| %>
+  				  <li>
   					<span><b><%= post.title %></b></span>
   					<span class="timestamp">Posted on <%= post.created_at.to_formatted_s(:long_ordinal) %> </span>
  					<span class="body"><%= post.body %></span>
- 					<br>
- 					<br>
+ 				  </li>
   				<% end %>
   			</ol>
+  		<% else %>
+  			<h3> <%= "user has not made any posts" %> </h3>
   		<% end %>
+  		<br>
+  		<br>
 	</ol>
 <% end %>
 </p>
 
 
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back to group', @group, class: "navButton" %>  |
+<%= link_to 'Return to group index', groups_path, class: "navButton" %> 
+<br>
+<br>
