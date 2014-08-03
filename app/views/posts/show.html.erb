@@ -14,16 +14,19 @@
 <button data-bind="click: function() { show_comment_function() }" class='navButton'>Comment</button>
 
 <%= render '/comments/form' %>
+<p data-bind="text: newMessage"></p>
 <p id='title'> Comments:</p>
 <div id='comments' data-bind="foreach: comments">
   <div class="comment" data-bind="template: {name: 'comment_template'}"></div> 
 </div>
 
+<!-- KO templates -->
 <%= render '/comments/comment' %>
 
 <script type="text/javascript">
   var comments = '<%= raw(escape_javascript(@comment_js)) %>'
   var post_id = <%= @post.id %>
-  var viewModel = new CommentViewModel({comments: comments, post: post_id})
+  var user_name = '<%= current_user.name %>'
+  var viewModel = new CommentViewModel({comments: comments, post: post_id, user: user_name})
   ko.applyBindings(viewModel)
 </script>
